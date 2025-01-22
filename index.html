@@ -1,11 +1,61 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt_Br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Arrastar e Soltar"</title>
+    <link rel="stylesheet" href="style.css">
+    <title>Arrastar e Soltar</title>
 </head>
 <body>
-    
+    <h1>Arrastar e Soltar</h1>
+    <div id="container">
+        <div class="drop-zone" id="left">
+            <div draggable="true" class="list" id="item1">Caixa 1</div>
+            <div draggable="true" class="list" id="item2">Caixa 2</div>
+        </div>
+        <div class="drop-zone" id="right">
+            <div draggable="true" class="list" id="item3">Caixa 3</div>
+            <div draggable="true" class="list" id="item4">Caixa 4</div>
+        </div>
+    </div>
+
+    <script>
+        const lists = document.querySelectorAll(".list");
+        const dropZones = document.querySelectorAll(".drop-zone");
+
+        lists.forEach((list) => {
+            list.addEventListener("dragstart", (e) => {
+                e.dataTransfer.setData("text/plain", e.target.id);
+                setTimeout(() => {
+                    e.target.style.display = "none"; 
+                }, 0);
+            });
+
+            list.addEventListener("dragend", (e) => {
+                e.target.style.display = "block"; 
+            });
+        });
+
+        dropZones.forEach((zone) => {
+            zone.addEventListener("dragover", (e) => {
+                e.preventDefault(); 
+                zone.style.backgroundColor = "#e2e8f0";
+            });
+
+            zone.addEventListener("dragleave", () => {
+                zone.style.backgroundColor = "#edf2f7"; 
+            });
+
+            zone.addEventListener("drop", (e) => {
+                e.preventDefault();
+                const draggedId = e.dataTransfer.getData("text/plain");
+                const draggedElement = document.getElementById(draggedId);
+                if (draggedElement) {
+                    zone.appendChild(draggedElement); 
+                }
+                zone.style.backgroundColor = "#edf2f7";
+            });
+        });
+    </script>
 </body>
 </html>
